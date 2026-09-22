@@ -8,9 +8,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '17'
@@ -19,7 +19,11 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@v4
 
+      - name: Unzip project
+        run: unzip -o DotLauncher.zip
+
       - name: Build
+        working-directory: DotLauncher
         run: |
           chmod +x gradlew
           ./gradlew assembleRelease --stacktrace
@@ -27,4 +31,4 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: DotLauncher-apk
-          path: app/build/outputs/apk/release/*.apk
+          path: DotLauncher/app/build/outputs/apk/release/*.apk
